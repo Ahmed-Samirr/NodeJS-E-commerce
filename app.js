@@ -17,8 +17,6 @@ const { authenticateUser } = require('./middleware/authentication');
 const connectDB = require('./db/connect');
 
 //Extra useful packages
-const { StatusCodes } = require('http-status-codes');
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const rateLimiter = require('express-rate-limit');
@@ -45,15 +43,10 @@ app.use(xss());
 app.use(mongoSanitize());
 app.use(cors());
 
-app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static('./public'));
 app.use(fileUpload());
-
-app.get('/', (req, res) => {
-    res.status(StatusCodes.OK).send('e-commerce api');
-})
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', authenticateUser, userRouter);
